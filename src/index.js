@@ -12,7 +12,6 @@ import store from './store/index.js';
 import App from './App';
 
 
-import Todolist from './pages/todolist/index.js'
 
 
 ReactDOM.render(

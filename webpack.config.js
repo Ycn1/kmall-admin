@@ -20,6 +20,15 @@ module.exports = {
 		//出口文件存储路径
 		path:path.resolve(__dirname,'dist')
 	},
+
+  //配置別名
+
+  /*resolve:{
+    alias:{
+      pages:path.resolve(__dirname,'./src/pages')
+
+    }
+  }*/
 	//配置loader
   module: {
     rules: [
