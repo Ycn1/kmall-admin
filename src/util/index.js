@@ -5,14 +5,20 @@ export const Require =(options)=>{
 	return new Promise ((resolve,reject)=>{
 		 axios({
         	method: options.method || 'get',
-        	url:options.url,
-        	data:options.data || null
+        	url:options.url||'',
+        	data:options.data || null,
+        	withCredentials: true,
         })
 		 .then(result=>{
 		 	let data = result.data;
+		 	console.log(data);
 
-		 	if(data.code == 1){
+		 	if(data.code == 10){
+
+		 		removeUserName();
+
 		 		window.location.href = '/login';
+
 		 		reject(data.message)
 		 	}
 		 	else{

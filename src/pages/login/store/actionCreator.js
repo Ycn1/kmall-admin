@@ -43,6 +43,8 @@ const getLoginDone = ()=>{
         	dispatch(getLoginDone())
         })
         .catch((err)=>{
+            console.log(err);
+            alert(err);
         	message.error('网络错误，请稍后重试');
         	dispatch(getLoginDone())
         })
