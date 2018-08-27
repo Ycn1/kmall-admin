@@ -3,12 +3,30 @@ import axios from 'axios';
 
 export const Require =(options)=>{
 	return new Promise ((resolve,reject)=>{
-		 axios({
-        	method: options.method || 'get',
+
+		const params={
+			method: options.method || 'get',
         	url:options.url||'',
-        	data:options.data || null,
         	withCredentials: true,
-        })
+		}
+		switch(options.method.toUpperCase())
+		{
+			case "GET":
+			case "DELETE":
+				params.params = options.data;
+				break;
+
+			default:
+				params.data =  options.data;
+				
+		}
+		axios(params)
+		/* axios({
+		 	method: options.method || 'get',
+        	url:options.url||'',
+        	parmas:options.data,
+        	withCredentials: true,
+		 })*/
 		 .then(result=>{
 		 	let data = result.data;
 		 	console.log(data);

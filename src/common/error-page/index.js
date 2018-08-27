@@ -17,7 +17,7 @@ class Errorpage extends Component {
     return (
     	<div className= "errorpage">
 	    	 <Alert message="Error Text" type="error" />
-	    	 <Link to = "/s">返回首頁</Link>
+	    	 <Link to = "/">返回首頁</Link>
 	   </div>
     );
   }
