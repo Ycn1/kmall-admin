@@ -9,3 +9,7 @@ export const logoutUrl =  SERVER + '/admin/logout';
 export const userCount  =  SERVER + '/admin/users';
 
 export const categoryCount  =  SERVER + '/category';
+
+export const categoryOnelist =  SERVER +'/category';
+
+

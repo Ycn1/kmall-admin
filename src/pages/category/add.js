@@ -31,7 +31,11 @@ class RegistrationForm extends Component {
 		      	this.props.handleSubmit(values)
 		       }
 		    });
-		  }
+		  };
+		  componentDidMount(){
+		 		this.props.handleOnecategory()
+		 	}
+
 	render(){
 		 const { getFieldDecorator } = this.props.form;
    		 // const { autoCompleteResult } = this.state;
@@ -97,7 +101,11 @@ class RegistrationForm extends Component {
 				           
 						            <Select initialValue="0" style={{ width: 120 }} onChange={handleChange}>
 										      <Option value="0">根分类</Option>
-										      <Option value="1">一级分类</Option>
+										      {
+										      	this.props.addCategoryOneList.map(categories=>{
+										      		return  <Option value={categories.get('_id')} key={categories.get('_id')}>根分类/{categories.get('name')}</Option>
+										      	})
+										      }
 										      
 										    </Select>
 										    
@@ -108,7 +116,6 @@ class RegistrationForm extends Component {
 			          <Button type="primary"
 				          onClick = {this.handleSubmit}
 	          			loading = {this.props.isAddFetching}
-
 				          >
 				          	提交
 			          </Button>
@@ -124,7 +131,8 @@ const CategoryAdd = Form.create()(RegistrationForm);
 const mapStateToProps = (state)=>{
 	
 	return {
-			isAddFetching:state.get('category').get('isAddFetching')
+			isAddFetching:state.get('category').get('isAddFetching'),
+			addCategoryOneList:state.get('category').get('addCategoryOneList')
 		}
 		
 }
@@ -136,6 +144,9 @@ const mapDispatchToProps = (dispatch)=>{
 
 			dispatch(action)
 
+		},
+		handleOnecategory:()=>{
+			dispatch(actionCreator.getCateOne())
 		}
 	}
 }
