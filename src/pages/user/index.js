@@ -77,16 +77,17 @@ class User extends Component {
 	    			columns={columns}
 	    			pagination={
 	    				{ 	
+	    					defaultCurrent:this.props.current,
 	    					current:this.props.current,
 	    					pageSize:this.props.pageSize,	    				
 	    					total:this.props.total,
-	    					defaultCurrent:this.props.current
+	    					
 	    				}
 	    			}
-	    			onChange={
-	    				pagination=>{
-	    					this.props.handlePage(pagination.current)
-	    				}}
+	    			onChange = {(pagination)=>{
+	    					console.log(pagination.current)
+							this.props.handlePage(pagination.current)
+						}}
 
 	    			loading={
 	    				{

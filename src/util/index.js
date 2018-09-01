@@ -9,7 +9,7 @@ export const Require =(options)=>{
         	url:options.url||'',
         	withCredentials: true,
 		}
-		switch(options.method.toUpperCase())
+		switch(params.method.toUpperCase())
 		{
 			case "GET":
 			case "DELETE":
@@ -20,6 +20,7 @@ export const Require =(options)=>{
 				params.data =  options.data;
 				
 		}
+		console.log(params)
 		axios(params)
 		/* axios({
 		 	method: options.method || 'get',

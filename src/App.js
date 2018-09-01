@@ -14,7 +14,9 @@ import Category from  'pages/category/index.js';
 
 import Errorpage from './common/error-page/index.js'
 import {  BrowserRouter as Router, Route, Link,Switch, Redirect,NavLink } from 'react-router-dom';
-import Login from './pages/login/index.js'
+import Login from './pages/login/index.js';
+
+import Product from 'pages/product/index.js'
 
 
 class App extends Component{
@@ -49,6 +51,8 @@ class App extends Component{
 						<ProtectRouter exact path ="/" component = { Home } />
 						<ProtectRouter exact path ="/user" component = { User } />
 						<ProtectRouter  path ="/category" component = { Category } />
+						<ProtectRouter  path ="/product" component = { Product } />
+
 
 						<LoginRouter path = '/login' component= { Login } />
 						<Route component = { Errorpage } />

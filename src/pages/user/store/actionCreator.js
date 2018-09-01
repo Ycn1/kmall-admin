@@ -44,8 +44,10 @@ const setPage = (payload)=>{
         		dispatch(setPage(result.data))
         	}
         	else if(result.code == 1){
-        		dispatch(getPageDone())
+                message.error('服务器错误,请稍后在试!')
+        		
         	}
+            dispatch(getPageDone())
         
         })
         .catch((err)=>{

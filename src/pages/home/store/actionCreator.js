@@ -32,6 +32,8 @@ const getHomeCount = (payload)=>{
         })
         .catch((err)=>{
         	message.error('网络错误，请稍后重试');
+
+            message.error('')
         	
         })
       }	

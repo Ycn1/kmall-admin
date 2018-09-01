@@ -7,7 +7,39 @@ import { actionCreator } from './store/index.js'
 
 
 import {  Modal,InputNumber,Divider,Select,Table, Input, Tooltip, Icon, Cascader, Row, Col, Checkbox, Button, AutoComplete,Breadcrumb} from 'antd';
-const columns = [
+
+
+class CategoryList extends Component {
+	constructor(props){
+			super(props);
+		
+			this.state = {
+				pid:this.props.match.params.pid || 0
+			}
+		}
+	componentDidMount(){
+
+ 		this.props.handleCateListPage(this.state.pid,1)
+ 	}
+	componentDidUpdate(preProps,preState){
+	
+		let oldPath = preProps.location.pathname;
+		let newPath = this.props.location.pathname;
+
+		if(oldPath != newPath){
+		
+				let newPid = this.props.match.params.pid || 0;
+				this.setState({
+					pid:newPid
+				},()=>{
+					this.props.handleCateListPage(newPid,1);
+				})
+		}
+	}
+
+ 	
+	render(){
+		const columns = [
 		{
 		  title: 'ID',
 		  dataIndex: 'id',
@@ -23,7 +55,14 @@ const columns = [
 		  dataIndex: 'order',
 		  key: 'order',
 		  render: (order, record) => {
-		    return	<InputNumber defaultValue={order}  />
+		    return	<InputNumber 
+		    		defaultValue={order}
+
+		    		onBlur = {(e)=>{
+		    			this.props.handleOrder(pid,record.id,e.target.value)
+		    		}}  
+
+		    	/>
 				}
 		},
 		{
@@ -32,48 +71,32 @@ const columns = [
 		  key: 'option',
 		  render: (text, record) => (
 		    <span>
-		      <Link to ={ "/category/"+record.id}>查看子分类</Link>
-		      <Divider type="vertical" />
+		     
 		      <a href="javascript:;"
-		      	onClick = {this.props.handleUpdateModel(record.id,record.name)}
+		      	onClick={()=>{
+					  		this.props.showUpdateModal(record.id,record.name)
+					  	}}
 		      >
 		      	更新名称
 
 		      </a>
+		      {		
+		      			record.pid == 0 
+
+				      	?	(<span>
+							      	<Divider type="vertical" />
+
+							        <Link to ={ "/category/"+record.id}>查看子分类</Link>
+					        </span>)
+				      	:null
+			     }
 		    </span>
 		  ),
 		}
 	];
-
-class CategoryList extends Component {
-	constructor(props){
-			super(props);
-		
-			this.state = {
-				pid:this.props.match.params.pid || 0
-			}
-		}
-
-	componentDidUpdate(preProps,preState){
-		console.log(preProps)
-		let oldPath =  preProps.location.pathName;
-		let newPath =  this.props.location.pathName;
-
-		if(oldPath != newPath){
-
-			this.setState = {
-				pid:this.props.match.params.pid || 0
-			}
-		}
-	}
-	componentDidMount(){
-
- 		this.props.handleCateListPage(this.state.pid,1)
- 	}
-	render(){
 		const pid = this.state.pid;
 		const data = this.props.list.map((category)=>{
-		 		console.log("users!!!!",category)
+		 	
 		 		return {
 		 			key:category.get('_id'),
 
@@ -82,16 +105,15 @@ class CategoryList extends Component {
 		 			order:category.get('order'),
 		 			pid:category.get('pid'),
 		 		
-		 			
-
 		 		}
 		 	}).toJS();
+		
 		return(
 			<MyLayout>
 				<Breadcrumb>
 	    					<Breadcrumb.Item>分类页面</Breadcrumb.Item>
 	    					<Breadcrumb.Item>分类管理</Breadcrumb.Item>
-	    			</Breadcrumb>
+	    	</Breadcrumb>
 				<div className="list" style={{ 'marginTop':"10px"}} className= "clearfix">
 					<Link to = "category/add">
 
@@ -113,25 +135,37 @@ class CategoryList extends Component {
 	    				}
 	    			}
 	    			onChange={
-	    				pagination=>{
-	    					this.props.handleCateListPage (this.state.pid,pagination.current)
+	    				(pagination)=>{
+	    					this.props.handleCateListPage (pid,pagination.current)
 	    				}}
 
 	    			loading={
 	    				{
-	    					spinning:false,
+	    					spinning:this.props.isPageFetching,
 	    					size:'large',
 	    					tip:"数据正在加载中"
 	    				}
 	    			}
 	    		 />
 	    		 <Modal
-			          title="Basic Modal"
-			          visible={this.state.updateModelVisible}
-			          onOk={this.handleUpdateName}
-			          onCancel={this.handleCancelName}
+			          title="修改分类名称"
+			          visible={this.props.updateModelVisible}
+			          onOk={()=>{this.props.handleUpdateName(this.state.pid)}}
+			          onCancel={this.props.handleCancelName}
 			        >
-			          <p>Some contents...</p>
+			          <p>
+
+			          		<label>原分类名</label>
+			          		<Input 
+			          				value={this.props.updateName}
+
+			          				onChange={(e)=>{
+			          					this.props.handleModelChangeName(e.target.value)
+			          				}}
+
+			          		 />
+			          		
+			          </p>
 			      </Modal>
 			</MyLayout>
 		)
@@ -140,28 +174,49 @@ class CategoryList extends Component {
 const mapStateToProps = (state)=>{
 	
 	return {
-				isListFetching:state.get('category').get('isListFetching'),
+				isPageFetching:state.get('category').get('isPageFetching'),
 			 	current:state.get('category').get('current'),
 	    		pageSize:state.get('category').get('pageSize'),	    				
 	    		total:state.get('category').get('total'),
-				list:state.get('category').get('list')
+				list:state.get('category').get('list'),
+				updateModelVisible:state.get('category').get('updateModelVisible'),
+				updateName:state.get('category').get('updateName'),
+			
+
 		}
 		
 }
 const mapDispatchToProps = (dispatch)=>{
 	return {
-		handleCateListPage:(pid,page)=>{
+				handleCateListPage:(pid,page)=>{
 
-			const action = actionCreator.getCateListpage(pid,page);
+					const action = actionCreator.getCateListpage(pid,page);
 
-			dispatch(action)
+					dispatch(action)
 
-		},
-		handleUpdateModel:(updateId,updateName)=>{
-			const action = actionCreator.getShowModelAction(updateId,updateName);
+				},
+				showUpdateModal:(updateId,updateName)=>{
+					const action = actionCreator.getUpdateModelAction(updateId,updateName);
 
-			dispatch(action)
-		}
+					dispatch(action)
+				},
+				handleCancelName:()=>{
+					dispatch(actionCreator.updateCancel())
+				},
+				handleUpdateName:(pid)=>{
+					dispatch(actionCreator.updateModelName(pid))
+				},
+				//改变的是input框里面的值
+				handleModelChangeName:(newName)=>{
+					dispatch(actionCreator.handleModelChangeName(newName))
+				},
+
+				//改变的是input框里面的order值
+
+				handleOrder:(pid,id,newOrder)=>{
+					dispatch(actionCreator.handleOrderValue(pid,id,newOrder))
+
+				}
 	}
 }
 export default connect(mapStateToProps,mapDispatchToProps)(CategoryList);

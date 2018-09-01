@@ -5,12 +5,12 @@ import { Layout, Menu, Breadcrumb, Icon,Dropdown } from 'antd';
 
 import { getUserName,Require,removeUserName } from 'util/index.js' ;
 
-
-const { SubMenu } = Menu;
-const { Header } = Layout;
 import { logoutUrl } from 'api/index.js'
 
 import './index.css'
+const { SubMenu } = Menu;
+const { Header } = Layout;
+
 
 class MyHeader extends Component {
 	constructor(props){

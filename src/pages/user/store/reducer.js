@@ -3,9 +3,9 @@ const { fromJS } = require('immutable');
 import  * as types  from './actionTypes.js';
 
 const defaultState = fromJS({
-	current:1,
-	pageSize:10,	    				
-	total:100,
+	current:0,
+	pageSize:0,	    				
+	total:0,
 	
 	isFetching:false,
 	list:[]
@@ -21,7 +21,7 @@ export default (state=defaultState,action)=>{
 		})
 	}
 	if(action.type ===  types.PAGR_START){
-		return state.set('isFetching',false)
+		return state.set('isFetching',true)
 	}
 	if(action.type ===  types.PAGE_DONE){
 		return state.set('isFetching',false)
