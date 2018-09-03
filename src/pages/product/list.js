@@ -3,11 +3,10 @@ import React,{ Component,applyMiddleware } from 'react';
 import {  BrowserRouter as Router, Route, Link, Redirect,NavLink, } from 'react-router-dom';
 import MyLayout from '../../common/layout/index.js';
 import { connect } from 'react-redux';
-import { actionCreator } from './store/index.js'
-
-
+import { actionCreator } from './store/index.js';
 import { Switch,InputNumber,Divider,Select,Table, Input, Tooltip, Icon, Cascader, Row, Col, Checkbox, Button, AutoComplete,Breadcrumb} from 'antd';
 
+const Search = Input.Search;
 
 class ProductList extends Component {
 	constructor(props){
@@ -39,8 +38,12 @@ class ProductList extends Component {
 
  	
 	render(){
-		const columns = [
 
+		 const {
+		 		keyword
+		 	} = this.props;
+		 
+		const columns = [
 
 		{
 		  title: 'ID',
@@ -51,6 +54,19 @@ class ProductList extends Component {
 		  title: '商品名称',
 		  dataIndex: 'name',
 		  key: 'name',
+		  render:(name)=>{
+		  	if(keyword){
+		  				let reg = new RegExp("("+keyword +")",'ig');
+		  				let html = name.replace(reg,"<b style='color:red'>$1</b>");
+		  				return <span dangerouslySetInnerHTML={{__html: html}}></span>
+
+		  							
+		  	}else{
+		  		return name
+
+		  	}
+		  
+		  }
 		}, 
 		{
 		  title: '商品状态',
@@ -100,7 +116,7 @@ class ProductList extends Component {
 
 	      	<span> 	
 
-				  <Link to ={ "/product/"+record.id}>查看</Link>
+				  <Link to ={ "/product/detail/"+record.id}>查看</Link>
 		     </span>
 				    
 			    
@@ -124,10 +140,20 @@ class ProductList extends Component {
 		
 		return(
 			<MyLayout>
-				<Breadcrumb>
+				
+				<Breadcrumb style={{ marginBottom: 20 }}>
 	    					<Breadcrumb.Item>商品页面</Breadcrumb.Item>
 	    					<Breadcrumb.Item>商品管理</Breadcrumb.Item>
-	    	</Breadcrumb>
+	    		</Breadcrumb>
+	    		<Search
+	    			  style={{ width: 300 }}
+				      placeholder="请输入搜索关键字"
+				      onSearch={value => {
+
+				      	this.props.handleSearch(value)
+				      }}
+				      enterButton
+				 />
 				<div className="list" style={{ 'marginTop':"10px"}} className= "clearfix">
 					<Link to = "/product/add">
 
@@ -150,7 +176,13 @@ class ProductList extends Component {
 	    			}
 	    			onChange={
 	    				(pagination)=>{
-	    					this.props.handleProductListPage (pagination.current)
+	    					console.log(keyword)
+	    					if(keyword){
+	    						this.props.handleSearch(keyword,pagination.current)
+	    					}else{
+	    						this.props.handleProductListPage (pagination.current)
+	    					}
+	    					
 	    				}}
 
 	    			loading={
@@ -174,6 +206,7 @@ const mapStateToProps = (state)=>{
 	    	pageSize:state.get('product').get('pageSize'),	    				
 	    	total:state.get('product').get('total'),
 			list:state.get('product').get('list'),
+			keyword:state.get('product').get('keyword'),
 		}
 		
 }
@@ -212,6 +245,9 @@ const mapDispatchToProps = (dispatch)=>{
 				handleOrder:(id,newOrder)=>{
 					dispatch(actionCreator.handleOrderValue(id,newOrder))
 
+				},
+				handleSearch:(keyword,page)=>{
+					dispatch(actionCreator.handleSearchName(keyword,page))
 				}
 	}
 }

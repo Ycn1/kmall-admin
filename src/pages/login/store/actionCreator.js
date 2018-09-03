@@ -34,7 +34,7 @@ const getLoginDone = ()=>{
 
         		setUserName (result.data.username)
 
-        		window.l21ocation.href = '/'
+        		window.location.href = '/'
         	}
         	else if(result.code == 10){
         		message.error(result.message)

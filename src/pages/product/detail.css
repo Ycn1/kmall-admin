@@ -1,0 +1,13 @@
+
+.detaimimage li {
+list-style: none;
+}
+
+.detaimimage li img{
+	width:100px;
+	height: 100px;
+	border: 1px solid #000;
+	float: left;
+
+
+}

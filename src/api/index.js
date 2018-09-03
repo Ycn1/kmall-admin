@@ -30,4 +30,6 @@ export const productUpdateStatus = SERVER + '/product/updateStatus';
 
 export const productEdit = SERVER +'/product/edit';
 
+export const SEARCH_PRODUCT = SERVER + '/product/serarchName'
+
 

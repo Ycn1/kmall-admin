@@ -16,6 +16,25 @@ class ImageUpload extends Component {
     this.handleCancel = this.handleCancel.bind(this);
 
   }
+
+/*  componentDidMount(){
+
+  }*/
+
+  static getDerivedStateFromProps(props,state){
+     
+
+        if(props.fileList.length > 0 &&  state.fileList.length == 0 ){
+          console.log("123",props.fileList)
+           state.fileList = props.fileList
+
+        }
+
+        return null;
+
+    }
+
+
  
 
   handleCancel  () {this.setState({ previewVisible: false })}

@@ -15,6 +15,10 @@ class RichEditor extends Component {
 
 	constructor(props){
 		super(props);
+
+		this.state={
+			isLoaded:false,
+		}
 		this.toolbar = [
 			  'title',
 			  'bold',
@@ -58,6 +62,15 @@ class RichEditor extends Component {
 			this.props.getRichValue(this.editor.getValue())
 		})
 
+ 	}
+ 	componentDidUpdate(){
+ 		if(this.props.detail && !this.state.isLoaded){
+ 			this.editor.setValue(this.props.detail)
+ 			this.setState({
+ 				isLoaded:true
+ 			})
+ 		}
+ 		
  	}
 	render(){
 		

@@ -34,14 +34,19 @@ class CategorySelect extends Component {
 
       const levelTowCategoryIdChanged = props.CategoryId != state.categoryTowSelectId;
 
+      //新增的时候不更新state,此时属于新增
+      if(state.categoryOneSelectId && !props.parendCategoryId && !props.CategoryId){
+         return null ;
+      }
       //  如果没有改变，则不更新stase上的值
       if(!levelOneCategoryIdChanged && !levelTowCategoryIdChanged){
-        return null ;
+        return null;
       }
 
       if(state.isChange){
         return null;
       }
+      //因为商品可以只有一级分类，此时的二级分类是无
       if(props.parendCategoryId == 0){
          return {
             categoryOneSelectId:props.CategoryId,
@@ -153,7 +158,8 @@ class CategorySelect extends Component {
     const levelTowOptions = categoryTowSelect.map(category => <Option key={category._id} value={category._id}>{category.name}</Option>);
     return (
       <div>
-        <Select 
+        <Select
+            disabled={this.props.disabled} 
             defaultValue={categoryOneSelectId}
             value={categoryOneSelectId}
             style={{ width: 300 }} 
@@ -163,7 +169,9 @@ class CategorySelect extends Component {
         {
 
           levelTowOptions.length?
-           (<Select 
+           (<Select
+            disabled={this.props.disabled} 
+            
             defaultValue={categoryTowSelectId}
             value={categoryTowSelectId}
             style={{ width: 300 }} 

@@ -21,6 +21,10 @@ const defaultState = fromJS({
 	editDec:'',
 	editPrice:'',
 	editStock:'',
+	keyword:'',
+
+
+	
 
 
 
@@ -74,7 +78,8 @@ if(action.type == types.SET_Product_LIST )	{
 			current:action.payload.current,
 			pageSize:action.payload.pageSize,	    				
 			total:action.payload.total,
-			list:fromJS(action.payload.list)
+			list:fromJS(action.payload.list),
+			keyword:action.payload.keyword,
 		})
 	}
 
@@ -120,6 +125,8 @@ if(action.type == types.SET_Product_LIST )	{
 			editDec:action.payload.dec,
 			editPrice:action.payload.price,
 			editStock:action.payload.stock,
+			image:action.payload.image,
+			detail:action.payload.detail,
 
 		})
 	}

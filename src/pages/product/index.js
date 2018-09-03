@@ -6,6 +6,8 @@ import {  BrowserRouter as Router, Route, Link,Switch, Redirect,NavLink } from '
 import ProductAdd from './add.js';
 
 import ProductList from './list.js';
+
+import ProductDetail from './detail.js';
 class Product extends Component {
 	render(){
 		return(
@@ -13,6 +15,8 @@ class Product extends Component {
 				
 
 				<Route path ="/product/add/:productId?" component ={ ProductAdd  } />
+				<Route path ="/product/detail/:productId?" component ={ ProductDetail  } />
+
 
 				<Route path ="/product" component= { ProductList }></Route>
 					

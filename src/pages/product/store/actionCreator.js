@@ -4,7 +4,16 @@ import { message } from 'antd';
 
 import { Require,setUserName } from '../../../util/index.js';
 
-import { categoryCount,Product_List,categoryList,productUpdateOrder,productUpdateStatus,add_product,productEdit } from '../../../api/index.js';
+import { 
+    categoryCount,
+    Product_List,
+    categoryList,
+    productUpdateOrder,
+    productUpdateStatus,
+    add_product,
+    productEdit,
+    SEARCH_PRODUCT 
+} from '../../../api/index.js';
 
 
 const getSaveDone = ()=>{
@@ -108,10 +117,19 @@ export const getSaveAction=(err,values)=>{
                 if(err){
                     return;
                 }
+
+                let method = 'post';
+
+                if(values.id){
+                    method='put';
+
+                }
+
+
                 dispatch(getSaveStart())
                
                  Require({
-                    method: 'post',
+                    method: method,
                     url:add_product,   
                     data:{ 
                         ...values, 
@@ -123,15 +141,7 @@ export const getSaveAction=(err,values)=>{
                     
                 })
                  .then((result)=>{
-                    
-                    
-                    
-                        console.log(result)
-                        
-                      /*  dispatch(updateModelnewName(result.data))
-                        dispatch(updateCancel())*/
-
-                   
+                    window.location.href = '/product';
                     dispatch(getSaveDone())
                  })
                  .catch(e=>{
@@ -275,6 +285,72 @@ export const handleEditProduct=(productId)=>{
            }
 
 }
+
+export const handleDetailProduct=(productId)=>{
+
+    return (dispatch,getState)=>{
+                const state = getState().get('product');
+                 Require({
+                    method: 'get',
+                    url:productEdit,
+                    data:{
+                        id:productId,
+                      
+                    }
+                })
+                 .then((result)=>{
+                  
+
+                    if(result.code == 0){
+                       dispatch(productEditAction(result.data))
+                    }else{
+                        message.error(result.message)
+                        dispatch(setProductPage(result.data))
+
+                    }
+                 })
+                 .catch(e=>{
+                    console.log(e)
+                 })
+
+           }
+
+}
+export const handleSearchName=(keyword,page=1)=>{
+
+    return (dispatch,getState)=>{
+              
+                 Require({
+                    method: 'get',
+                    url:SEARCH_PRODUCT,
+                    data:{
+                        keyword,
+                        page
+                      
+                    }
+                })
+                 .then((result)=>{
+
+                    if(result.code == 0){
+                        console.log("search")
+                        dispatch(setProductPage(result.data))
+                       
+                    }
+                    else if(result.code == 1){
+                    message.error('网络错误，请稍后重试');
+                       
+                    }
+                 })
+                 .catch(e=>{
+                    console.log(e)
+                 })
+
+           }
+
+}
+
+
+
 /* export const getCateAction = (values)=>{
  	return (dispatch)=>{
  		dispatch(getAddStart())

@@ -15,8 +15,8 @@ import ImageUpload from '../../common/ImageUpload/index.js';
 import { productImage,productRichEditor } from '../../api/index.js';
 
 import RichEditor from '../../common/richeditor/index.js';
-// import ImageUpload from '../../common/ImageUpload/inedx.js';
 
+import './detail.css';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -26,7 +26,7 @@ const AutoCompleteOption = AutoComplete.Option;
 class RegistrationForm extends Component {
 		constructor(props){
 				super(props);
-				this.handleSubmit = this.handleSubmit.bind(this);
+
 				this.state = {
 					
 					productId:this.props.match.params.productId
@@ -39,27 +39,24 @@ class RegistrationForm extends Component {
 		      
 		      	 values.id = this.state.productId;
 		  
-		      	
-		      	this.props.handleSave(err,values);
+
 		       
 		    });
 		  };
-
-
 		  componentDidMount(){
 		 		// this.props.handleOnecategory()
 
 		 		if(this.state.productId){
-		 			this.props.handleEdit(this.state.productId)
+		 			this.props.handleProductDetail(this.state.productId)
 		 		}
 		 	}
 
 	render(){
 		 const {
-		 		editName,
-		 		editDec,
-		 		editPrice,
-		 		editStock,
+		 		name,
+		 		dec,
+		 		price,
+		 		stock,
 		 		parendCategoryId,
 		 		CategoryId,
 		 		image,
@@ -68,16 +65,16 @@ class RegistrationForm extends Component {
 	
 		
 
-		let  fileList = [];
+		let  detailimage ="";
 
 		if(image){
-			fileList = image.split(',').map((img,index)=>({
-					 uid: index,
-				     status: 'done',
-				     url: img,
-				     response:img
+			detailimage = image.split(',').map((img,index)=>(
+					<li key = {index}>
+						<img src={img} />
+
+					</li>
 				    
-			}))
+			))
 
 		}
 
@@ -119,13 +116,7 @@ class RegistrationForm extends Component {
 					<Breadcrumb>
 	    					<Breadcrumb.Item>商品页面</Breadcrumb.Item>
 	    					<Breadcrumb.Item>
-	    							{
-	    								this.state.productId ?
-
-	    								"商品管理"
-	    								:"商品添加"
-
-	    							}
+	    							商品详情
 	    					</Breadcrumb.Item>
 	    			</Breadcrumb>
 				</div>
@@ -134,32 +125,21 @@ class RegistrationForm extends Component {
 				          {...formItemLayout}
 				          label="商品名称"
 				        >
-				          {getFieldDecorator('name', {
-				            rules: [{
-				              required: true, message: '请输入商品名称',
-				            }],
-				            	initialValue:editName
-				          })(
+
 				            <Input
-				            	placeholder = "商品名称"
+				            	disabled={true}
+				            	value ={name}
 				             />
-				          )}
+				        
 			        </FormItem>
 			         <FormItem
 				          {...formItemLayout}
 				          label="商品描述"
-				        >
-				           {getFieldDecorator('dec', {
-					            rules: [ {
-					              required: true, message: '请输入商品描述',
-					            }],
-					            initialValue:editDec
-					          })(
-				           
-					            <Input
-					            	placeholder = "商品描述"
-					             />
-				             )}
+				        >				          
+				            <Input
+				            	disabled={true}
+				            	value ={dec}
+				             />
 				         
 			        </FormItem>
 			         <FormItem
@@ -171,117 +151,64 @@ class RegistrationForm extends Component {
 
 				          help={this.props.Categoryhelp}
 				        >
-				      		 
-				           
-						           <CategorySelect 
 
-						           			parendCategoryId= {parendCategoryId}
-						           			CategoryId = {CategoryId}
-												    getCategoryId={(parendCategoryId,CategoryId)=>{
-								        			this.props.getCate(parendCategoryId,CategoryId)
-								        		}}
-								        	/>
-								        	
-						 				
-				         
+				           <CategorySelect 
+				          
+				           			disabled={true}
+				           			parendCategoryId= {parendCategoryId}
+				           			CategoryId = {CategoryId}
+										    getCategoryId={(parendCategoryId,CategoryId)=>{
+						        			this.props.getCate(parendCategoryId,CategoryId)
+						        		}}
+						     />
+
 			        </FormItem>
 			        <FormItem
 				          {...formItemLayout}
 				          label="商品价格"
 				        >
-				       		 {getFieldDecorator('price', {
-					            rules: [ {
-					              required: true, message: '请输入商品价格',
-					            }],
-					            initialValue:editPrice
-					          })(
-				           
-				         
 				             <InputNumber
 									    
-									      min={0}
-									      max={100}
-									      formatter={value => `${value}元`}
-									      parser={value => value.replace('元', '')}
+							      min={0}
+							      max={100}
+							      disabled={true}
+				            	  value ={price}
 									   
-									    />
-				        )}
+							 />
+				
 				        
 			        </FormItem>
 			         <FormItem
 				          {...formItemLayout}
 				          label="商品库存"
 				        >
-				          {getFieldDecorator('stock', {
-					            rules: [ {
-					              required: true, message: '请输入商品库存',
-					            }],
-
-					            initialValue:editStock
-					          })(
+				         
 				            <InputNumber
-									     
-									     
-									      formatter={value => `${value}件`}
-									      parser={value => value.replace('件', '')}
+								disabled={true}
+								value = {stock}									
 									   
-									    />
+							  />
 
-									    )}
 				         
 			        </FormItem>
 			         <FormItem
 				          {...formItemLayout}
 				          label="商品图片"
 				        >
-				          <ImageUpload
-				          		fileList={fileList}
-				          		action = { productImage }
-				          		maxImage = {3}
-				          		getFileList = {
-				          			(fileList)=>{
-				          				this.props.handleImage(fileList)
-				          			}
-				          		}
 
-				           />
-				           
-				         
+				        <ul className="detaimimage">
+
+				        	{detailimage}
+
+
+				        </ul>
 			        </FormItem>
 			        <FormItem
 				          {...formItemLayout}
 				          label="商品描述"
 				        >
-				           {getFieldDecorator('dec', {
-					            rules: [ {
-					              required: true, message: '请输入商品描述',
-					            }],
-					          })(
-				           
-					            <RichEditor
-					            	detail = {detail}
-					            	url = {productRichEditor}
-
-					            	getRichValue= {
-					            		(value)=>{
-					            			 this.props.handleDetail(value)
-					            		}
-
-
-					            	}
-
-					             />
-				             )}
-				         
-			        </FormItem>
-			         
-			         <FormItem {...tailFormItemLayout}>
-			          <Button type="primary"
-				          onClick = {this.handleSubmit}
-	          			  loading = {this.props.isSaveFetching}
-				          >
-				          	提交
-			          </Button>
+				            <div dangerouslySetInnerHTML={{__html: detail}} ></div>
+				            
 			        </FormItem>
 		        </Form>
 		        
@@ -289,17 +216,17 @@ class RegistrationForm extends Component {
 		)
 	}
 }
-const CategoryAdd = Form.create()(RegistrationForm);
+const ProductDetail = Form.create()(RegistrationForm);
 
 const mapStateToProps = (state)=>{
 
 	return {
 			CategoryvalidateError:state.get('product').get('CategoryvalidateError'),
 			Categoryhelp:state.get('product').get('Categoryhelp'),
-			editName:state.get('product').get('editName'),
-			editDec:state.get('product').get('editDec'),
-			editPrice:state.get('product').get('editPrice'),
-			editStock:state.get('product').get('editStock'),
+			name:state.get('product').get('editName'),
+			dec:state.get('product').get('editDec'),
+			price:state.get('product').get('editPrice'),
+			stock:state.get('product').get('editStock'),
 			parendCategoryId:state.get('product').get('parendCategoryId'),
 			CategoryId:state.get('product').get('CategoryId'),
 			image:state.get('product').get('image'),
@@ -337,10 +264,10 @@ const mapDispatchToProps = (dispatch)=>{
 		handleOnecategory:()=>{
 			dispatch(actionCreator.getCateOne())
 		},
-		handleEdit:(productId)=>{
-			dispatch(actionCreator.handleEditProduct(productId))
+		handleProductDetail:(productId)=>{
+			dispatch(actionCreator.handleDetailProduct(productId))
 		}
 	}
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(CategoryAdd);
+export default connect(mapStateToProps,mapDispatchToProps)(ProductDetail);
