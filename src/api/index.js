@@ -30,6 +30,11 @@ export const productUpdateStatus = SERVER + '/product/updateStatus';
 
 export const productEdit = SERVER +'/product/edit';
 
-export const SEARCH_PRODUCT = SERVER + '/product/serarchName'
+export const SEARCH_PRODUCT = SERVER + '/product/serarchName';
 
+export const ORDERALL = SERVER + '/order/order';
+
+export const SEARCH_ORDER =SERVER + '/order/search';
+
+export const Set_order_detail = SERVER + '/order/detailAdmin';
 

@@ -10,6 +10,8 @@ const defaultState = fromJS({
 	detail:'',
 	CategoryvalidateError:'',
 	Categoryhelp:'',
+	imagesvalidateError:'',
+	imageshelp:'',
 	stock:'',
 	current:0,
 	pageSize:0,	    				
@@ -51,7 +53,11 @@ export default (state=defaultState,action)=>{
 	}
 
 	if(action.type === types.ADD_IMAGE){
-		return state.set('image',action.payload)
+		return state.merge({
+			'image':action.payload,
+			imagesvalidateError:"",
+			imageshelp:""
+		})
 	}
 
 	if(action.type === types.ADD_DETAIL){
@@ -73,6 +79,29 @@ export default (state=defaultState,action)=>{
 		})
 
  	}
+ 	if(action.type=== types.SET_IMAEGS_ERROR){
+ 		return state.merge({
+			imagesvalidateError:"error",
+			imageshelp:"请添加图片"
+
+		})
+
+ 	}
+ /*	if(action.type=== types.SET_CATEGORT_ERROR){
+ 		return state.merge({
+			CategoryvalidateError:"error",
+			Categoryhelp:"请选择所属分类"
+
+		})
+
+ 	}if(action.type=== types.SET_CATEGORT_ERROR){
+ 		return state.merge({
+			CategoryvalidateError:"error",
+			Categoryhelp:"请选择所属分类"
+
+		})
+
+ 	}*/
 if(action.type == types.SET_Product_LIST )	{
 		return state.merge({
 			current:action.payload.current,

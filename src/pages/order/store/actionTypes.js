@@ -36,3 +36,8 @@ export const SET_Product_LIST = 'product_list';
 export const PRODUCT_EDIT_ACTION = 'product_edit_action';
 
 export const SET_IMAEGS_ERROR = 'product/set_images_error';
+
+
+export const SET_ORDER_LIST = 'order_list';
+
+export const SET_ORDER_DETAIL = 'set_order_detail';

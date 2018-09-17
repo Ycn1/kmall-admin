@@ -232,7 +232,12 @@ class RegistrationForm extends Component {
 			        </FormItem>
 			         <FormItem
 				          {...formItemLayout}
+				          
+				          required= {true}
 				          label="商品图片"
+				          validateStatus={ this.props.imagesvalidateError}
+
+ 				          help={this.props.imageshelp}
 				        >
 				          <ImageUpload
 				          		fileList={fileList}
@@ -296,6 +301,9 @@ const mapStateToProps = (state)=>{
 	return {
 			CategoryvalidateError:state.get('product').get('CategoryvalidateError'),
 			Categoryhelp:state.get('product').get('Categoryhelp'),
+			editName:state.get('product').get('editName'),
+			imagesvalidateError:state.get('product').get('imagesvalidateError'),
+			imageshelp:state.get('product').get('imageshelp'),
 			editName:state.get('product').get('editName'),
 			editDec:state.get('product').get('editDec'),
 			editPrice:state.get('product').get('editPrice'),

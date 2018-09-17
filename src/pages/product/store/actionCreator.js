@@ -86,6 +86,12 @@ const setCategoryError = ()=>({
 
 
 })
+const setImageError = ()=>({
+    type:types.SET_IMAEGS_ERROR,
+
+
+})
+
 
 const setProductPage = (payload)=>{
     return {
@@ -109,9 +115,20 @@ export const getSaveAction=(err,values)=>{
 
      return (dispatch,getState)=>{
                 const state = getState().get('product');
+                //自定义的检测
                 const CategoryId = state.get('CategoryId');
+                const Images = state.get('image');
+                let showErr = false;
                 if(!CategoryId){
                     dispatch(setCategoryError())
+                    showErr = true
+                }
+                 if(!Images){
+                    dispatch(setImageError())
+                    showErr = true
+                   
+                }
+                if(showErr){
                     return;
                 }
                 if(err){

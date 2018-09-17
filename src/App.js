@@ -8,6 +8,7 @@ import './App.css';
 import { Require,getUserName } from './util/index.js';
 
 import Home from './pages/home/index.js';
+import Order from './pages/order/index.js';
 
 import User from './pages/user/index.js';
 import Category from  'pages/category/index.js';
@@ -52,7 +53,7 @@ class App extends Component{
 						<ProtectRouter exact path ="/user" component = { User } />
 						<ProtectRouter  path ="/category" component = { Category } />
 						<ProtectRouter  path ="/product" component = { Product } />
-
+						<ProtectRouter  path ="/order" component = { Order } />
 
 						<LoginRouter path = '/login' component= { Login } />
 						<Route component = { Errorpage } />

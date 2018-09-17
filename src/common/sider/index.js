@@ -41,6 +41,11 @@ class MySider extends Component {
 			            	<NavLink to = "/product">
 			            		<Icon type="book" />商品
 			            	</NavLink>
+			            </Menu.Item>
+			              <Menu.Item key="5">
+			            	<NavLink to = "/order">
+			            		<Icon type="book" />订单管理
+			            	</NavLink>
 			            </Menu.Item>			          
 			        </Menu>
 			      </Sider>
