@@ -38,3 +38,5 @@ export const SEARCH_ORDER =SERVER + '/order/search';
 
 export const Set_order_detail = SERVER + '/order/detailAdmin';
 
+export const DELIVER_GOODS = SERVER + '/order/deliver';
+

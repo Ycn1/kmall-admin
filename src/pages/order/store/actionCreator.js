@@ -11,7 +11,7 @@ import {
     productUpdateOrder,
     productUpdateStatus,
     add_product,
-    productEdit,
+   DELIVER_GOODS,
     SEARCH_ORDER 
 } from '../../../api/index.js';
 
@@ -95,7 +95,7 @@ export const getProductListpage = (page)=>{
 
 
 
-
+//获取管理员详情页
 export const handleDetailAction=(orderNo)=>{
 
     return (dispatch)=>{
@@ -109,7 +109,7 @@ export const handleDetailAction=(orderNo)=>{
                     }
                 })
                  .then((result)=>{
-                  console.log(result)
+                  console.log("00111",result)
                    
                        dispatch(setOrderDetail(result.data))
                   
@@ -153,8 +153,36 @@ export const handleSearchOrderNo=(keyword,page=1)=>{
            }
 
 }
+//发货按钮处理
 
+export const handleDeliverAction=(orderNo)=>{
 
+    return (dispatch,getState)=>{
+              
+                 Require({
+                    method: 'put',
+                    url:DELIVER_GOODS,
+                    data:orderNo                 
+                    
+                })
+                 .then((result)=>{
+
+                    if(result.code == 0){
+                        dispatch(setOrderPage(result.data))
+                       
+                    }
+                    else if(result.code == 1){
+                    message.error('网络错误，请稍后重试');
+                       
+                    }
+                 })
+                 .catch(e=>{
+                    console.log(e)
+                 })
+
+           }
+
+}
 
 /* export const getCateAction = (values)=>{
  	return (dispatch)=>{

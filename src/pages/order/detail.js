@@ -24,7 +24,7 @@ class OrderDetail extends Component {
 			};
 		
 		  componentDidMount(){
-		 	
+		 
 
 		 		if(this.state.orderNo){
 
@@ -33,7 +33,7 @@ class OrderDetail extends Component {
 		 	}
 
 	render(){
-
+	
 		 const {
 		 		orderNo,
 		 		payment,
@@ -46,7 +46,7 @@ class OrderDetail extends Component {
 		 	} = this.props.orderDetail;
 		 	let createdTime  ='';
 		 	if(createdAt){
-		 		console.log("121",createdTime)
+		 	
 		 		createdTime = moment(createdAt).format('YYYY-MM-DD HH:mm:ss')
 		 	}
 		 	
@@ -91,10 +91,12 @@ class OrderDetail extends Component {
 												? <Popconfirm 
 														placement="topLeft" 
 														title={"确认发货吗"} 
-														onConfirm={confirm} 
+														onConfirm={()=>{this.props.confirm({orderNo})}} 
+
 														okText="确认" 
 														cancelText="取消">
-											        <Button>发货</Button>
+											       <Button>发货</Button>
+
 											      </Popconfirm>
 												
 												:null
@@ -124,7 +126,7 @@ class OrderDetail extends Component {
 											return <ul className="product-item" key = {index}>
 										
 													<li className="product-info">
-														<a href="./detail.html/productId = {product.product}" className="link">
+														<a href={"/product/detail/"+ product.product} className="link">
 															<img src={product.image} alt="" />
 															<span>{product.name}</span>
 														</a>
@@ -169,11 +171,17 @@ const mapStateToProps = (state)=>{
 		
 }
 const mapDispatchToProps = (dispatch)=>{
-	return {
-		
-		handleOrderDetail:(orderNo)=>{
 
+	return {
+	
+		handleOrderDetail:(orderNo)=>{
+			alert(orderNo)
 			dispatch(actionCreator.handleDetailAction(orderNo))
+		},
+		//发货处理
+		confirm:(orderNo)=>{
+			alert(orderNo)
+			dispatch(actionCreator.handleDeliverAction(orderNo))
 		}
 	}
 }
